@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'VideoRotasPrivadasEmReact'
+const STORAGE_KEY = 'username'
 
 const isLogged = () => !!localStorage.getItem(STORAGE_KEY)
 const login = token => localStorage.setItem(STORAGE_KEY, token)
