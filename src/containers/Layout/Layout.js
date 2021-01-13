@@ -1,14 +1,14 @@
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
+
   UserOutlined,
   VideoCameraOutlined
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import React, { Component } from "react";
-
-
+import { history } from "../../history";
+import { MenuAvatar } from "../Layout/profile";
 const { Header, Sider, Content } = Layout;
 
 export class LayoutPrivate extends Component {
@@ -28,19 +28,16 @@ export class LayoutPrivate extends Component {
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
           <div className="logo" />
           <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-            <Menu.Item key="1" icon={<UserOutlined />}>
+            <Menu.Item key="1" icon={<VideoCameraOutlined />} onClick={()=>{history.push('/')}}>
               nav 1
             </Menu.Item>
-            <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-              nav 2
-            </Menu.Item>
-            <Menu.Item key="3" icon={<UploadOutlined />}>
-              nav 3
+            <Menu.Item key="2" icon={<UserOutlined />} onClick={()=>{history.push('/users')}}>
+              Usuários
             </Menu.Item>
           </Menu>
         </Sider>
         <Layout className="site-layout">
-          <Header className="site-layout-background" style={{ padding: 0 }}>
+          <Header className="ant-row">
             {React.createElement(
               this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
               {
@@ -48,7 +45,9 @@ export class LayoutPrivate extends Component {
                 onClick: this.toggle,
               }
             )}
+            <MenuAvatar />
           </Header>
+          
           <Content
             className="site-layout-background"
             style={{

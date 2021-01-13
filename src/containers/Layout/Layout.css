@@ -25,6 +25,13 @@
 .ant-layout .site-layout{
   height:100vh;
 }
-.ant-layout-header {
-  padding-left: 2em !important;
+.row-image-profile{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ant-row{
+  background-color: #fff;
+  align-items: center;
+  justify-content: space-between;
 }
