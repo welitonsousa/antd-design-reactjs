@@ -1,0 +1,15 @@
+.card-login{
+  background-color: #FFFFFF;
+  text-align: center;
+  width: 300px;
+}
+.body{
+  background-color: #00152A;
+  justify-items: center;
+  align-items: center;
+  display: grid;
+  height: 100vh;
+}
+.logo{
+  width: 100%;
+}
