@@ -3,7 +3,7 @@ import { Route, Router, Switch } from "react-router";
 import { history } from "../history";
 import { Home } from "../pages/Home";
 import { Login } from "../pages/Login";
-import NotFound from "../pages/NotFound";
+import { NotFound } from "../pages/NotFound";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 

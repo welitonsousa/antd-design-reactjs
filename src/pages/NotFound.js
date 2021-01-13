@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { Component } from "react";
 
-const NotFound = () => <h1>NotFound</h1>
-
-export default NotFound
+export class NotFound extends Component {
+  render() {
+    return <h1>Page not found</h1>;
+  }
+}
