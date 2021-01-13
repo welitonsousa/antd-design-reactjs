@@ -1,9 +1,8 @@
-import React from 'react'
-import { Route, Redirect } from 'react-router'
-import { isLogged } from '../utils/auth'
+import React from "react";
+import { Redirect, Route } from "react-router";
+import { isLogged } from "../utils/auth";
 
-const PublicRoute = props => isLogged()
-    ? <Redirect to="/"/>
-    : <Route {...props}/>
+const Public = (props) =>
+  !isLogged() ? <Route {...props} /> : <Redirect to="/" />;
 
-export default PublicRoute
+export default Public;

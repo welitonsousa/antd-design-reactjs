@@ -1,6 +1,6 @@
 import React from 'react'
-import Root from '../components/Root'
+import { Routes } from '../components/Routes'
 
-const App = () => <Root/>
+const App = () => <Routes/>
 
 export default App

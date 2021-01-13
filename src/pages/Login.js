@@ -1,18 +1,20 @@
-import React from 'react'
-import { login } from '../utils/auth'
-import { history } from '../history'
+import React, { Component } from "react";
+import { history } from "../history";
+import { login } from "../utils/auth";
 
-const Login = () => {
-    const handleSignIn = () => {
-        login('abc123')
-        history.push('/')
-    }
-    return (
-        <>
-            <h1>Login</h1>
-            <button onClick={handleSignIn}>Sign in</button>
-        </>
-    )
+
+const handleLogin = () => {
+  login()
+  history.push('/')
 }
 
-export default Login
+export class Login extends Component {
+  render() {
+    return (
+      <>
+        <h1>Login</h1>
+        <button onClick={handleLogin}>Login</button>
+      </>
+    );
+  }
+}
