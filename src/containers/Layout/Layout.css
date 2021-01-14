@@ -20,11 +20,15 @@
   background: #fff;
 }
 .body{
-  height:100vh;
+  min-height: 100vh;
+  height:100%;
 }
 .ant-layout .site-layout{
-  height:100vh;
+  min-height: 100vh;
+  height:100%;
+  width: max-content !important;
 }
+
 .row-image-profile{
   display: flex;
   align-items: center;

@@ -1,7 +1,6 @@
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-
   UserOutlined,
   VideoCameraOutlined
 } from "@ant-design/icons";
@@ -16,22 +15,35 @@ export class LayoutPrivate extends Component {
     collapsed: false,
   };
 
-  toggle = () => {
+  toggle() {
     this.setState({
       collapsed: !this.state.collapsed,
     });
-  };
+  }
 
   render() {
     return (
       <Layout>
-        <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
+        <Sider trigger={null} collapsible collapsed={this.state.collapsed} >
           <div className="logo" />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-            <Menu.Item key="1" icon={<VideoCameraOutlined />} onClick={()=>{history.push('/')}}>
-              nav 1
+          <Menu
+            theme="dark"
+            mode="inline"
+          >
+            <Menu.Item
+              icon={<VideoCameraOutlined />}
+              onClick={() => {
+                history.push("/");
+              }}
+            >
+              Teste
             </Menu.Item>
-            <Menu.Item key="2" icon={<UserOutlined />} onClick={()=>{history.push('/users')}}>
+            <Menu.Item
+              icon={<UserOutlined />}
+              onClick={() => {
+                history.push("/users");
+              }}
+            >
               Usuários
             </Menu.Item>
           </Menu>
@@ -42,12 +54,12 @@ export class LayoutPrivate extends Component {
               this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
               {
                 className: "trigger",
-                onClick: this.toggle,
+                onClick: () => this.toggle(),
               }
             )}
             <MenuAvatar />
           </Header>
-          
+
           <Content
             className="site-layout-background"
             style={{
