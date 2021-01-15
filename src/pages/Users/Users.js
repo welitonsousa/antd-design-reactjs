@@ -1,62 +1,194 @@
-import { Avatar, Table } from "antd";
-import Axios from "axios";
-import React, { Component } from "react";
+import { DeleteOutlined } from "@ant-design/icons";
+import { Button, Image, Input, Modal, Table } from "antd";
+import React, { useEffect, useState } from "react";
+import { columns, getUsers, usersData } from "./data";
+import "./Users.css";
 
-export class Users extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      users: [{ fullName: "", city: "", state: "", email: "", picture: "", key: "" }],
-      values: [
-        {
-          title: "",
-          dataIndex: "picture",
-          key: "picture",
-          render: (linkPicture) => <Avatar src={linkPicture} />,
-        },
-        {
-          title: "Nome",
-          dataIndex: "fullName",
-          key: "fullName",
-        },
-        {
-          title: "Email",
-          dataIndex: "email",
-          key: "email",
-        },
-        {
-          title: "Cidade",
-          dataIndex: "city",
-          key: "city",
-        },
-        {
-          title: "Estado",
-          dataIndex: "state",
-          key: "state",
-        },
-      ],
-    };
-    this.getUsers();
+const Users = () => {
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalVisibleCreateUser, setModalVisibleCreateUser] = useState(false);
+
+  const [users, setUsers] = useState(usersData);
+  const [valuesTable] = useState(columns);
+  const [currentUserIndex, setCurrentUserIndex] = useState(0);
+
+  const [userName, setUserName] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [email, setEmail] = useState("");
+  const [picture, setPicture] = useState("");
+
+  async function getData() {
+    const listUsers = await getUsers();
+    setUsers(listUsers);
   }
 
-  async getUsers() {
-    const res = await Axios.get(
-      "https://randomuser.me/api?page=1&results=20&seed=abc"
-    );
-    this.setState({
-      users: res.data.results.map((user) => ({
-        ...user,
-        fullName: `${user.name.title} ${user.name.first} ${user.name.last}`,
-        city: user.location.city,
-        state: user.location.state,
-        email: user.email,
-        picture: user.picture.large,
-        key: user.login.uuid
-      })),
-    });
-  }
+  useEffect(() => {
+    getData();
+  }, []);
 
-  render() {
-    return <Table onChange={(e)=>{console.log(e)}} className="table" dataSource={this.state.users} columns={this.state.values}/>;
-  }
-}
+  const showModal = (index) => {
+    setCity(users[index].city);
+    setState(users[index].state);
+    setUserName(users[index].fullName);
+    setPicture(users[index].picture);
+    setModalVisible(true);
+  };
+
+  const hideModal = () => {
+    setUserName("");
+    setCity("");
+    setState("");
+    setEmail("");
+    setPicture("");
+    setModalVisible(false);
+    setModalVisibleCreateUser(false);
+  };
+
+  return (
+    <>
+      <Button
+        onClick={() => {
+          setModalVisibleCreateUser(true);
+        }}
+      >
+        +
+      </Button>
+      <Table
+        className="table"
+        dataSource={users}
+        columns={valuesTable}
+        onRow={(user, index) => {
+          return {
+            onClick: () => {
+              if (!!user.fullName) {
+                setCurrentUserIndex(index);
+                showModal(index);
+              }
+            },
+          };
+        }}
+      />
+      <Modal
+        title={users[currentUserIndex].fullName}
+        visible={isModalVisible}
+        onCancel={hideModal}
+        onOk={hideModal}
+      >
+        <Image src={picture}/>
+        <Input
+          value={userName}
+          placeholder="usuário"
+          onChange={(event) => {
+            setUserName(event.target.value);
+          }}
+        />
+        <Input
+          value={city}
+          placeholder="Cidade"
+          onChange={(event) => {
+            setCity(event.target.value);
+          }}
+        />
+        <Input
+          value={state}
+          placeholder="Estado"
+          onChange={(event) => {
+            setState(event.target.value);
+          }}
+        />
+        <div>
+          <Button
+            type="primary"
+            onClick={() => {
+              if (!!userName) {
+                users[currentUserIndex].fullName = userName;
+              }
+              if(!!city){
+                users[currentUserIndex].city = city;
+              }
+              if (!!state){
+                users[currentUserIndex].state = state;
+              }
+
+                setUsers(users);
+                hideModal();
+              
+            }}
+          >
+            Salvar
+          </Button>
+          <Button
+            onClick={() => {
+              users.slice( currentUserIndex, 1);
+              setUsers(users);
+              hideModal();
+            }}
+            type="primary"
+            danger
+          >
+            <DeleteOutlined />
+          </Button>
+        </div>
+      </Modal>
+
+      <Modal visible={isModalVisibleCreateUser} onCancel={hideModal}>
+        <Input
+          placeholder="usuário"
+          onChange={(event) => {
+            setUserName(event.target.value);
+          }}
+        />
+        <Input
+          placeholder="Cidade"
+          onChange={(event) => {
+            setCity(event.target.value);
+          }}
+        />
+        <Input
+          placeholder="Estado"
+          onChange={(event) => {
+            setState(event.target.value);
+          }}
+        />
+        <Input
+          placeholder="Email"
+          onChange={(event) => {
+            setEmail(event.target.value);
+          }}
+        />
+        <div>
+          <Button
+            type="primary"
+            onClick={() => {
+              if (!!userName && !!state && !!city && !!email) {
+                users[currentUserIndex].fullName = userName;
+                users[currentUserIndex].city = city;
+                users[currentUserIndex].state = state;
+                users[currentUserIndex].email = email;
+
+                setUsers([
+                  ...users,
+                  {
+                    fullName: userName,
+                    city: city,
+                    state: state,
+                    email: email,
+                    picture: "",
+                    key: `${new Date().getTime()}`,
+                  },
+                ]);
+                hideModal();
+              }
+            }}
+          >
+            Criar
+          </Button>
+        </div>
+      </Modal>
+    </>
+  );
+};
+
+export { Users };
+
